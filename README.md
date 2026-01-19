@@ -47,6 +47,15 @@ Issues, pull requests, and discussions are intentionally disabled to preserve se
 
 If you have critique, alternative analyses, or counterexamples, you are encouraged to publish your own material and reference this work where relevant.
 
+## Contributions and Pull Requests
+
+This repository is a reference document defining execution governance and related failure modes.
+
+Pull requests are intentionally not accepted. Definitions and wording are fixed to preserve semantic stability.
+
+If you have critique, alternative analyses, or counterexamples, you are encouraged to publish your own material and reference this work where relevant.
+
+
 
 ## Document Stability
 

@@ -14,6 +14,8 @@ Most existing control mechanisms focus on decision quality - confidence scores, 
 This document defines execution governance as a distinct and necessary system layer. Execution governance determines whether an action is allowed to execute at all, based on system state validity, authority, and risk constraints - independent of how "good" or "confident" the decision appears.
 The goal is not to optimize actions, but to prevent autonomous systems from entering invalid or unsafe states at the irreversible action boundary.
 
+This document addresses a widely recognized but unresolved engineering problem in autonomous systems: how to govern execution when decision-making systems transition from reasoning to irreversible action under uncertainty.
+
 ## 1. The Irreversible Action Boundary
 
 An irreversible action is any action whose effects cannot be reliably undone once executed.

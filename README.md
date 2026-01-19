@@ -38,6 +38,16 @@ This repository contains a canonical definition of execution governance and a se
 - **Failure Analysis #4 – Authority Drift in Long-Running Autonomous Systems**  
   `/docs/failure-analysis-04-authority-drift-in-long-running-autonomous-systems.md`
 
+
+## Issues and Contributions
+
+This repository is a reference document defining execution governance and related failure modes.
+
+Issues, pull requests, and discussions are intentionally disabled to preserve semantic stability and avoid inline debate over definitions.
+
+If you have critique, alternative analyses, or counterexamples, you are encouraged to publish your own material and reference this work where relevant.
+
+
 ## Document Stability
 
 The definitions in this repository are intended to be stable over time.  

@@ -67,18 +67,37 @@ It demonstrates **control correctness and survivability only**.
 
 ---
 
-## 6. Evidence Reference
+---
 
-The feasibility result is supported by a read-only audit of live MAS operation.
+## 6. Audit Evidence (Live)
 
-Evidence sources included:
-- Live execution logs (`live_trade_ledger.jsonl`)
-- Decision and risk audit logs (`audit.log`, `alerts.log`)
-- Configuration snapshots and risk profiles
-- Execution and connector health telemetry
+The feasibility claim is supported by a read-only audit of live MAS operation.
+The audit evaluated whether any execution occurred while a declared risk
+invariant was active.
 
-The audit reconstructed enforced risk gates and evaluated all hard execution
-invariants. No invariant violations were observed.
+### Evidence Summary
 
-**Full audit output is available on request or via controlled review.**
+- **29 explicit risk gates** reconstructed directly from code and configuration
+- **14 hard execution invariants** evaluated
+- **0 invariant violations observed**
+- **240+ risk veto events**
+- **25 executions / 25 closes**
+- **No execution occurred during blocked states**
+- **Automation remained live across multiple days**
+
+### Evaluated Invariants (PASS)
+
+- No execution when RiskState ≠ Approve  
+- No execution during cooldown after loss or loss streak  
+- No execution after daily loss or drawdown breach  
+- No execution beyond symbol or portfolio exposure limits  
+- No execution under low/high volatility blocks  
+- No execution with stale account snapshot or live tick  
+- No execution under execution health, spread, or slippage violations  
+
+**Result:** All evaluated invariants passed under live conditions.
+
+This constitutes direct evidence that suppression-first execution governance
+can operate correctly at the irreversible boundary.
+d review.**
 

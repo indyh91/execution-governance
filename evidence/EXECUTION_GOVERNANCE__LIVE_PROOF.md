@@ -1,4 +1,10 @@
-# Proof of Feasibility: Live Execution Governance
+# Execution Governance — Live Proof
+
+**Claim:** An autonomous system can continuously enforce explicit risk invariants
+at the irreversible boundary under live conditions, without human intervention
+and without disabling automation.
+
+**Result:** PASS (0 invariant violations under live operation).
 
 ## 1. Purpose
 
@@ -97,7 +103,33 @@ invariant was active.
 
 **Result:** All evaluated invariants passed under live conditions.
 
+# Execution Governance — Live Proof
+
+## Evaluated Invariants (Live)
+
+| Invariant | Result |
+|---|---|
+| No execution when RiskState ≠ Approve | PASS |
+| No execution during cooldown after loss | PASS |
+| No execution after daily loss or drawdown breach | PASS |
+| No execution beyond symbol exposure limits | PASS |
+| No execution beyond portfolio exposure limits | PASS |
+| No execution under volatility regime blocks | PASS |
+| No execution with stale account snapshot | PASS |
+| No execution with stale or missing live tick | PASS |
+| No execution under execution health violations | PASS |
+| No execution with spread or slippage beyond limits | PASS |
+| No execution when broker outage block active | PASS |
+| No execution when banned symbols/time windows apply | PASS |
+| No execution with invalid stop/TP constraints | PASS |
+| Automation resumes correctly after risk blocks | PASS |
+
+
+## Enforced Risk Inventory (Reconstructed from Live System)
+
+
+
 This constitutes direct evidence that suppression-first execution governance
 can operate correctly at the irreversible boundary.
-d review.**
+d. review.**
 

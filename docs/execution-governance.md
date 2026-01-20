@@ -5,6 +5,20 @@
 **Scope:** Conceptual framework and failure analysis
 **Non-Scope:** Product marketing, implementation details, or build instructions
 
+## Canonical Definition (v1 — stable)
+
+**Execution Governance**  
+A runtime, suppression-first control mechanism that enforces non-bypassable veto authority at irreversible execution boundaries, where correctness is defined as *prevented invalid action*.
+
+This definition is normative for this repository.
+
+### Scope & Provenance
+
+The concepts in this document were developed independently and first published on Jan 19, 2026.
+This work addresses execution-time governance at irreversible action boundaries, not general AI safety or alignment.
+created_at": "2026-01-19T12:36:34Z
+pushed_at": "2026-01-20T14:06:49Z
+
 ## Abstract
 
 Autonomous systems increasingly execute actions that have irreversible real-world consequences: moving capital, invoking external APIs, mutating infrastructure, or altering external state.

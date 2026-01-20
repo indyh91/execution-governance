@@ -20,6 +20,15 @@ The goal is not to optimize actions, but to prevent autonomous systems from ente
 
 This repository contains a canonical definition of execution governance and a set of failure analyses demonstrating why execution governance is necessary in autonomous systems.
 
+**Evidence Summary**
+29 explicit risk gates reconstructed directly from code and configuration
+14 hard execution invariants evaluated
+0 invariant violations observed
+240+ risk veto events
+25 executions / 25 closes
+No execution occurred during blocked states
+Automation remained live across multiple days
+
 ### Canonical Reference
 - **Execution Governance**  
   `/docs/execution-governance.md`  

@@ -5,6 +5,13 @@
 **Scope:** Conceptual framework and failure analysis  
 **Non-Scope:** Product marketing, implementation details, or build instructions
 
+---
+
+#### Canonical Claim (Immutable)
+
+Autonomous systems operating in safety-critical, non-idempotent environments were previously unable to deterministically prevent invalid or unsafe irreversible actions because execution authority was inseparably coupled to probabilistic decision confidence, leaving the moment of execution as an undefined and ungovernable control surface. It is now demonstrably possible to enforce transactional state-validity at the irreversible action boundary by decoupling intent from authority through a suppression-first execution governance layer that exercises unilateral, deterministic veto power over all outbound actions based solely on real-time environmental validity, independent of model confidence. This guarantee holds only when the governance layer sits in-path on the execution surface, possesses access to an independent source of state authority, and applies non-probabilistic veto logic, and it does not address decision quality, model alignment, post-hoc remediation, or strategic optimality—only the prevention of invalid state transitions at the point where execution becomes irreversible.
+
+---
 
 ## Abstract
 

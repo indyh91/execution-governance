@@ -64,3 +64,21 @@ This work does **not** demonstrate:
 - Alpha generation
 
 It demonstrates **control correctness and survivability only**.
+
+---
+
+## 6. Evidence Reference
+
+The feasibility result is supported by a read-only audit of live MAS operation.
+
+Evidence sources included:
+- Live execution logs (`live_trade_ledger.jsonl`)
+- Decision and risk audit logs (`audit.log`, `alerts.log`)
+- Configuration snapshots and risk profiles
+- Execution and connector health telemetry
+
+The audit reconstructed enforced risk gates and evaluated all hard execution
+invariants. No invariant violations were observed.
+
+**Full audit output is available on request or via controlled review.**
+

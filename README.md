@@ -25,6 +25,9 @@ This repository contains a canonical definition of execution governance and a se
   `/docs/execution-governance.md`  
   Defines execution governance, suppression-first control, the irreversible action boundary, and the action veto fabric.
 
+- **Proof of Feasibility**
+  `/docs/Proof-of-Feasibility.md`  
+
 ### Failure Analyses
 - **Failure Analysis #1 – Autonomous Agent Tool-Use Cascades**  
   `/docs/failure-analysis-01-agent-tool-cascade.md`
@@ -37,6 +40,9 @@ This repository contains a canonical definition of execution governance and a se
 
 - **Failure Analysis #4 – Authority Drift in Long-Running Autonomous Systems**  
   `/docs/failure-analysis-04-authority-drift-in-long-running-autonomous-systems.md`
+
+
+
 
 
 ## Issues and Contributions

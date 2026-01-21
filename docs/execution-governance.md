@@ -125,6 +125,18 @@ It is the successful prevention of an invalid state transition.
 
 Suppression-first systems prioritize correctness of system state over action throughput.
 
+
+### On Fail-Operational Domains
+
+Execution-time governance does not assert that inaction is universally safe.
+
+It asserts that **executing an irreversible action without established validity is always unsafe**.
+
+In domains where action is required to maintain safety or liveness (e.g. fail-operational systems), governance demands **sufficient authoritative state to prove the action correct at execution time**, or a **predefined safe fallback** that itself satisfies invariants.
+
+Acting without correctness is a failure; delaying execution to obtain correctness or fall back safely is not.
+
+
 ## 5. The Action Veto Fabric
 
 An action veto fabric is the collection of independent, stateful checks that can unilaterally prevent execution of an action.

@@ -42,7 +42,19 @@ Automation remained live across multiple days
   Defines execution governance, suppression-first control, the irreversible action boundary, and the action veto fabric.
 
 - **Proof of Feasibility**
-  `/docs/Proof-of-Feasibility.md`  
+  `/docs/Proof-of-Feasibility.md`
+
+### Foundational Anchors (Theory + Necessity)
+These documents do not change the canonical claim; they tighten it by grounding the architecture in established enforcement theory and by removing common “escape hatches” (approvals, monitoring, rollback, confidence thresholds) as logically sufficient substitutes.
+
+* Theory Anchor #1 — Reference Monitor for Actions  
+  `/docs/theory-anchor-01-reference-monitor-for-actions.md`  
+  Frames execution governance as an in-path reference monitor: complete mediation, tamperproofness, and analyzable correctness.
+
+* Necessity Argument #1 — TOCTOU + Runtime Enforceability  
+  `/docs/necessity-argument-01-toctou-and-runtime-enforceability.md`  
+  Shows why off-path checks cannot guarantee prevention at irreversible boundaries (TOCTOU), and why safety guarantees require runtime enforcement with suppression authority.
+
 
 ### Failure Analyses
 - **Failure Analysis #1 – Autonomous Agent Tool-Use Cascades**  
@@ -57,6 +69,8 @@ Automation remained live across multiple days
 - **Failure Analysis #4 – Authority Drift in Long-Running Autonomous Systems**  
   `/docs/failure-analysis-04-authority-drift-in-long-running-autonomous-systems.md`
 
+- **Failure Analysis #5 – Prompt Level Safety Fails**  
+  `/docs/failure-analysis-05-Prompt-Level-Safety-Fails.md`
 
 
 

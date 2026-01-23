@@ -1,0 +1,39 @@
+# 0) Go to your repo root
+cd "C:\path\to\execution-governance"
+
+# 1) Verify files are in place
+dir demo
+dir demo\demo_cli.py
+dir demo\policy.py
+dir demo\scenarios.json
+
+# 2) Create a demo branch (optional but nice)
+git checkout -b demo-blackbox
+
+# 3) Add and commit the demo files
+git add demo
+git commit -m "Add black-box execution governance demo harness"
+
+# 4) Show commit hash (this is the first thing you show in the video)
+git rev-parse HEAD
+
+# 5) Clean outputs so the run starts fresh (outputs are not committed)
+if (Test-Path demo\out) { Remove-Item -Recurse -Force demo\out }
+
+# 6) Run veto scenario (S1)
+python demo\demo_cli.py --scenario S1
+
+# 7) Prove irreversible sink unchanged after veto
+if (Test-Path demo\out\executed_actions.jsonl) { Get-Content demo\out\executed_actions.jsonl } else { "No executed_actions.jsonl (expected after VETO)" }
+
+# 8) Run allow scenario (S2)
+python demo\demo_cli.py --scenario S2
+
+# 9) Prove sink changed after allow
+Get-Content demo\out\executed_actions.jsonl
+
+# 10) Show last 2 decisions (VETO then ALLOW)
+Get-Content demo\out\decision_log.jsonl -Tail 2
+
+# 11) Show counters
+Get-Content demo\out\counters.json

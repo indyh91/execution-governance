@@ -1,0 +1,16 @@
+{
+  "S1": {
+    "action_id": "A1",
+    "action_type": "EXTERNAL_CALL",
+    "action_class": "RESTRICTED",
+    "authority_token_present": false,
+    "payload": "opaque-demo-payload-veto"
+  },
+  "S2": {
+    "action_id": "A2",
+    "action_type": "EXTERNAL_CALL",
+    "action_class": "RESTRICTED",
+    "authority_token_present": true,
+    "payload": "opaque-demo-payload-allow"
+  }
+}

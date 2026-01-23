@@ -1,4 +1,6 @@
 Black-Box Demo — Execution-Time Governance at the Irreversible Action Boundary
+## Demo video
+▶️ Black-box demo (VETO ⇒ no commit, ALLOW ⇒ commit): https://github.com/indyh91/execution-governance/releases/tag/demo-v1
 
 This folder contains a minimal, non-domain-specific demo harness that proves one hard property:
 
@@ -89,5 +91,6 @@ Notes
 This demo is a minimal proof of the boundary property, not a full system implementation.
 
 Reason codes are intentionally generic (e.g., INV-02) to avoid leaking domain-specific logic.
+
 
 All domain-specific implementation details remain outside this demo.

@@ -1,0 +1,249 @@
+\documentclass[10pt]{article}
+
+\usepackage{fullpage}
+\usepackage{CJKutf8} 
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage[section]{placeins}
+\usepackage{xcolor}
+\usepackage{breakcites}
+\usepackage{lineno}
+\usepackage{hyphenat}
+
+
+
+
+
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\@combinedblfloats{\box\@outputbox}{\unvbox\@outputbox}{}{%
+  \errmessage{\noexpand\@combinedblfloats could not be patched}%
+}%
+\makeatother
+
+
+\usepackage{natbib}
+
+
+
+
+\renewenvironment{abstract}
+  {{\bfseries\noindent{\abstractname}\par\nobreak}\footnotesize}
+  {\bigskip}
+
+\titlespacing{\section}{0pt}{*3}{*1}
+\titlespacing{\subsection}{0pt}{*2}{*0.5}
+\titlespacing{\subsubsection}{0pt}{*1.5}{0pt}
+
+
+\usepackage{authblk}
+
+
+\usepackage{graphicx}
+\usepackage[space]{grffile}
+\usepackage{latexsym}
+\usepackage{textcomp}
+\usepackage{longtable}
+\usepackage{tabulary}
+\usepackage{booktabs,array,multirow}
+\usepackage{amsfonts,amsmath,amssymb}
+\providecommand\citet{\cite}
+\providecommand\citep{\cite}
+\providecommand\citealt{\cite}
+% You can conditionalize code for latexml or normal latex using this.
+\newif\iflatexml\latexmlfalse
+\AtBeginDocument{\DeclareGraphicsExtensions{.pdf,.PDF,.eps,.EPS,.png,.PNG,.tif,.TIF,.jpg,.JPG,.jpeg,.JPEG}}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+
+
+\usepackage{float}
+
+
+
+
+
+
+
+
+
+
+\iflatexml
+\documentclass{article}
+\fi
+\usepackage{amsmath}
+
+\usepackage{amssymb}
+
+\usepackage{url}
+
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\title{Execution-Time Governance at Irreversible Action Boundaries}
+
+
+
+\author[1]{Shae Henderson}%
+\affil[1]{Affiliation not available}%
+
+
+\vspace{-1em}
+
+
+
+  
+  \date{January 23, 2026}
+
+
+\begingroup
+\let\center\flushleft
+\let\endcenter\endflushleft
+\maketitle
+\endgroup
+
+
+
+
+
+\selectlanguage{english}
+\begin{abstract}
+Autonomous systems increasingly emit outbound actions that cross an irreversible action boundary, where execution produces non-idempotent effects in an external world. At this boundary, correctness after the fact is operationally meaningless: once an invalid state transition has been executed, monitoring, remediation, and compensation operate on a different state than the one that should have been preserved. Existing controls---monitoring, human approval, rollback/compensation, and confidence/probabilistic gating---fail in principle because they either act off-path, act after the boundary, or couple execution authority to probabilistic decision confidence rather than to real-time state validity. This paper formally articulates the resulting problem as execution-time correctness: the deterministic prevention of invalid irreversible actions at the moment execution becomes irreversible. It then consolidates execution governance with suppression-first, fail-closed control as the minimal viable solution class: an in-path layer on the execution surface that decouples intent from authority and exercises unilateral, deterministic veto authority over outbound actions based on real-time environmental validity, independent of model confidence. This paper is a formal articulation aligned to the canonical definition maintained separately.%
+\end{abstract}%
+
+
+
+\sloppy
+
+
+\section*{Introduction}
+
+Many modern systems have shifted from producing recommendations to directly executing actions. In this regime, the central safety question is not whether an upstream planner ``chose well,'' but whether the system can deterministically prevent an invalid or unsafe irreversible action from being executed.
+
+The defining constraint is irreversibility. When execution crosses an irreversible action boundary, the system transitions from internal deliberation to external state mutation. If the external mutation is non-idempotent, then ``correctness after execution'' is not a meaningful target: the relevant state is already changed, and subsequent actions operate in a different world than the one that would have existed under suppression.
+
+Common safety narratives focus on improving planning-time correctness: better predictions, better confidence scores, better approval workflows, or better post-hoc monitoring. These mechanisms can improve visibility or decision quality, but they do not provide a deterministic veto at the moment of irreversible execution.
+
+Execution governance is the architectural missing layer that treats execution authority as a first-class control surface. It separates intent (proposed actions) from authority (what can actually execute) and makes execution-time correctness enforceable at the boundary.
+
+\section*{The Irreversible Action Boundary}
+
+An irreversible action boundary is the point at which an outbound action produces non-idempotent effects in an external environment. The boundary is defined by irreversibility of the effect, not by the internal complexity of the system producing it. ``External'' here includes any environment whose state is not deterministically restorable by the acting system once mutated.
+
+Irreversibility is not limited to physically destructive actions. It includes any execution that initiates state transitions that are (a) not reliably undoable, (b) not undoable within the same authority surface, or (c) undoable only by executing additional actions that themselves cross the same boundary. Examples include capital movement, external API invocation, and infrastructure mutation.
+
+At an irreversible action boundary, rollback and remediation are structurally illusory substitutes for prevention. Rollback is itself an execution (a new action), and compensation modifies state rather than restoring the original state. Even in domains where partial reversal is possible, reversal is not equivalent to prevention: additional state changes, third-party effects, and time-dependent propagation ensure that the ``restored'' system is not the pre-execution system.
+
+Therefore, the relevant correctness property at this boundary is prevention of invalid state transitions at the moment of execution, not detection or repair after the transition has occurred.
+
+\section*{Structural Insufficiency of Existing Controls}
+
+\subsection*{Monitoring}
+
+Monitoring observes execution effects after they occur. It can detect anomalies, record telemetry, and support incident response, but it does not constitute execution-time authority. Monitoring has no deterministic guarantee of preventing an outbound action from crossing the boundary because its causal placement is after the boundary.
+
+Even ``real-time'' monitoring does not remove this limitation. Observation and response are separated by latency. At an irreversible action boundary, any latency admits at least one execution that crosses the boundary before suppression can be applied. The monitoring plane can inform future actions, but it cannot retroactively make an already-executed irreversible action unexecuted.
+
+\subsection*{Human approval}
+
+Human approval is frequently treated as a veto mechanism. Architecturally, it is not a veto unless it is enforced in-path at the execution surface. If approval occurs as a workflow step upstream of execution, then approval is a planning-time check. It does not bind the actual execution to the state that was evaluated at approval time.
+
+This is a TOCTOU problem: state can change between approval (time of check) and execution (time of use). An approval can be correct relative to a previous state and still authorize an action that is invalid at the moment it executes. Approval also fails as a veto if the execution surface remains bypassable, because the system retains direct execution authority independent of the approval signal.
+
+\subsection*{Rollback / compensation}
+
+Rollback and compensation are framed as safety nets, but they do not provide a correctness guarantee at irreversible boundaries. Rollback requires additional execution authority to attempt to ``undo'' a prior action, but that attempt is itself an outbound action crossing the same boundary. The rollback action must therefore be governed by the same execution-time constraints as the original action.
+
+More fundamentally, rollback assumes that the environment supports an inverse transition that is both available and equivalent to restoration. In non-idempotent environments, inverse transitions are not guaranteed to exist. Even when available, the environment state after rollback is generally not equivalent to the state in which the invalid action never occurred, because irreversible boundary crossings propagate side effects and time-dependent changes.
+
+Thus rollback/compensation can be operationally useful, but they do not constitute deterministic prevention of invalid irreversible actions.
+
+\subsection*{Confidence / probabilistic gating}
+
+Confidence thresholds, probabilistic gating, and other decision-quality mechanisms treat execution as a function of predicted correctness. This is structurally insufficient when the problem is execution-time correctness relative to real-time environmental validity. Confidence is a property of a decision procedure; state validity is a property of the environment at the moment of execution.
+
+Coupling execution authority to probabilistic confidence fails in two directions. A high-confidence intent can still be invalid relative to the true environment state, and a low-confidence intent can still be valid. At an irreversible action boundary, the required guarantee is not ``execute only when sufficiently confident,'' but ``do not execute when the action would cause an invalid state transition.''
+
+The canonical framing identifies the historical coupling of execution authority to probabilistic decision confidence as the reason the moment of execution becomes an undefined and ungovernable control surface. Execution-time safety guarantees require decoupling authority from confidence and binding authority to deterministic veto logic over real-time state validity.
+
+\section*{Execution Governance}
+
+Execution governance is a distinct system layer responsible for determining whether an action is allowed to execute at all, based on system state validity, authority, and risk constraints, independent of predicted decision quality.
+
+Formally, separate the production of intent from the authority to execute. Let an autonomous system emit an intent: a proposed outbound action. Execution governance sits in-path on the execution surface and mediates all outbound actions. For each proposed action, the governance layer evaluates execution invariants and risk constraints against real-time environmental validity using an independent source of state authority. If invariants hold, the action is allowed to execute. If invariants do not hold, the action is suppressed.
+
+The veto authority is unilateral and deterministic. It does not require consensus with the upstream agent, and it does not depend on probabilistic confidence. Suppression-first semantics mean the default outcome under uncertainty or invalidity is suppression (fail-closed), and suppression is treated as correctness: the system preserves invariants by making invalid execution unexecutable.
+
+The canonical definition further frames execution governance as an in-path reference monitor for actions, emphasizing complete mediation, tamperproofness, and analyzable correctness as enforcement requirements for the governance layer.
+
+This scope is intentionally narrow. The guarantee concerns prevention of invalid state transitions at the irreversible action boundary. It does not address decision quality, model alignment, post-hoc remediation, or strategic optimality.
+
+\section*{Minimal Viable Architecture}
+
+A minimal architecture for execution governance is defined by placement and authority rather than by implementation detail.
+
+First, there must be a defined execution surface: the interface through which outbound actions cross the irreversible action boundary. This surface is where intent becomes execution.
+
+Second, the execution governance layer must sit in-path on that execution surface. In-path means the governance layer mediates the actual actuation of outbound actions, not merely their proposal or logging. If the governance layer is off-path, then it cannot provide deterministic prevention because execution can occur without mediation.
+
+Third, the governance layer must possess veto authority that is unilateral, deterministic, and non-probabilistic. The veto must be able to suppress outbound actions regardless of upstream intent and regardless of decision confidence.
+
+Fourth, the governance layer must have access to an independent source of state authority sufficient to evaluate real-time environmental validity at execution time. Without independent state authority, the governance layer inherits the same uncertainty and coupling as the decision layer and cannot enforce state-validity invariants at the boundary.
+
+Fifth, suppression-first, fail-closed semantics define correctness: the system is correct when invalid state transitions are unexecutable. Under this semantics, the primary correctness property is invariant preservation, not action completion. Suppression is not a degraded mode; it is the correct outcome when invariants cannot be satisfied at execution time.
+
+Finally, non-bypassability follows from complete mediation. If outbound actions can reach the irreversible boundary without traversing the governance layer, then execution governance reduces to advisory control and cannot provide the claimed prevention guarantee.
+
+\section*{Illustrative Failure Classes (Brief)}
+
+Execution-boundary failures recur across domains because the structural pattern is invariant: an automated system retains direct execution authority over an irreversible action boundary, while controls exist upstream (approvals, confidence) or downstream (monitoring, remediation).
+
+In financial automation, automated routing and trading systems can emit orders that immediately execute in external markets. Public enforcement records describe failures where monitoring is post-execution and cannot prevent orders from entering the market once emitted.
+
+In payment and settlement systems, a mistaken outbound payment can complete as a final external state transition, after which recovery depends on external parties and legal processes rather than deterministic system rollback. Public court opinions describe such mistaken payments as completed transfers whose reversal is not simply an internal undo.
+
+In infrastructure and network control planes, configuration actions can trigger global connectivity loss. Public engineering reports describe outages initiated by automated backbone-management actions, after which the system's own operational tooling can be impaired, limiting any post-execution response.
+
+These incidents are not invoked here as case studies. They illustrate that the problem class is execution-time authority at irreversible boundaries, and that post-hoc correctness mechanisms do not provide execution-time prevention.
+
+
+
+\section*{Conclusion}
+
+At an irreversible action boundary, the system's relevant correctness property is execution-time correctness: deterministically preventing invalid irreversible actions at the moment they would execute. Monitoring, human approval, rollback/compensation, and confidence/probabilistic gating are structurally insufficient substitutes for this property because they do not provide an in-path, non-bypassable veto authority tied to real-time environmental validity.
+
+Execution governance, as defined canonically, isolates execution authority as a distinct control surface. By decoupling intent from authority and enforcing suppression-first, fail-closed veto semantics on the execution surface using an independent source of state authority and non-probabilistic logic, execution governance defines a minimal viable solution class for preventing invalid state transitions at irreversible boundaries.
+
+Under this framing, suppression is correctness: the system preserves invariants by making invalid execution unexecutable.
+
+\section*{Canonical Definition and Reference}
+
+The canonical definition and terminology for execution governance, including execution governance, irreversible action boundary, suppression-first, fail-closed, veto authority, and execution surface, are maintained in: \url{https://github.com/indyh91/execution-governance}.
+
+This paper is a formal articulation aligned to that canonical definition. It does not supersede, replace, or extend the canonical framework.
+
+Illustrative public references (non-exhaustive, non-survey):
+
+\begin{enumerate}
+\item Canonical framework: \url{https://github.com/indyh91/execution-governance}.
+\item Knight Capital Americas LLC SEC administrative order (Release No.\ 70694): \url{https://www.sec.gov/files/litigation/admin/2013/34-70694.pdf}.
+\item In re: Citibank August 11, 2020 (Second Circuit opinion): \url{https://www.courthousenews.com/wp-content/uploads/2022/09/21-487\_complete\_opn.pdf}.
+\item Meta Engineering outage report: \url{https://engineering.fb.com/2021/10/05/networking-traffic/outage-details}.
+
+\end{enumerate}
+
+\selectlanguage{english}
+\FloatBarrier
+\end{CJK}\end{document}
+
